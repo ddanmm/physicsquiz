@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Science Practice Quiz</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+#quizBox{
+    border:1px solid #ccc;
+    padding:20px;
+    border-radius:10px;
+}
+
+button{
+    padding:10px 20px;
+    margin-top:15px;
+    cursor:pointer;
+}
+
+.correct{
+    color:green;
+    font-weight:bold;
+}
+
+.wrong{
+    color:red;
+    font-weight:bold;
+}
+
+.explanation{
+    background:#f0f8ff;
+    padding:10px;
+    margin-top:10px;
+    border-left:4px solid #2196F3;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Science Practice Quiz</h1>
+
+<div id="quizBox">
+    <h2 id="question"></h2>
+
+    <div id="choices"></div>
+
+    <button id="submitBtn">Submit</button>
+
+    <div id="feedback"></div>
+
+    <button id="nextBtn" style="display:none;">Next Question</button>
+</div>
+
+<script>
+
+const quiz = [
+
+{
+question:"1. What force pulls objects toward Earth?",
+choices:["Friction","Gravity","Magnetism","Tension"],
+answer:1,
+explanation:"Gravity is the force that attracts objects toward Earth."
+},
+
+{
+question:"2. Which planet is known as the Red Planet?",
+choices:["Venus","Jupiter","Mars","Mercury"],
+answer:2,
+explanation:"Mars appears reddish because of iron oxide on its surface."
+},
+
+{
+question:"3. What is the boiling point of water at sea level?",
+choices:["50°C","75°C","100°C","150°C"],
+answer:2,
+explanation:"Water boils at 100°C under normal atmospheric pressure."
+},
+
+{
+question:"4. Which part of the plant makes food?",
+choices:["Root","Stem","Leaf","Flower"],
+answer:2,
+explanation:"Leaves perform photosynthesis to make food."
+},
+
+{
+question:"5. What is the center of our solar system?",
+choices:["Earth","Moon","Sun","Mars"],
+answer:2,
+explanation:"The Sun is at the center of the solar system."
+}
+
+];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion(){
+
+document.getElementById("feedback").innerHTML="";
+document.getElementById("nextBtn").style.display="none";
+
+const q = quiz[current];
+
+document.getElementById("question").textContent = q.question;
+
+let html = "";
+
+q.choices.forEach((choice,index)=>{
+html += `
+<label>
+<input type="radio" name="answer" value="${index}">
+${choice}
+</label><br><br>
+`;
+});
+
+document.getElementById("choices").innerHTML = html;
+}
+
+loadQuestion();
+
+document.getElementById("submitBtn").addEventListener("click",function(){
+
+const selected = document.querySelector('input[name="answer"]:checked');
+
+if(!selected){
+alert("Please select an answer.");
+return;
+}
+
+const answer = Number(selected.value);
+const q = quiz[current];
+
+if(answer === q.answer){
+
+score++;
+
+document.getElementById("feedback").innerHTML =
+`<p class="correct">✔ Correct!</p>
+<div class="explanation">${q.explanation}</div>`;
+
+document.getElementById("nextBtn").style.display="inline-block";
+
+document.querySelectorAll('input[name="answer"]').forEach(r=>{
+r.disabled = true;
+});
+
+}
+else{
+
+document.getElementById("feedback").innerHTML =
+`<p class="wrong">✘ Incorrect. Try Again.</p>`;
+
+}
+
+});
+
+document.getElementById("nextBtn").addEventListener("click",function(){
+
+current++;
+
+if(current < quiz.length){
+
+loadQuestion();
+
+}
+else{
+
+document.getElementById("quizBox").innerHTML = `
+<h2>Quiz Complete!</h2>
+<p>Your Score: <strong>${score}/${quiz.length}</strong></p>
+`;
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
