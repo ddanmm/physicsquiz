@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1D Kinematics Quiz</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        line-height: 1.6;
+    }
+
+    .question-box{
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    h2{
+        margin-top: 0;
+    }
+
+    button{
+        padding: 8px 15px;
+        margin: 5px;
+        cursor: pointer;
+    }
+
+    .feedback{
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .hint{
+        color: blue;
+        margin-top: 10px;
+    }
+
+    #nextBtn{
+        display:none;
+    }
+
+    #scoreBox{
+        display:none;
+        text-align:center;
+    }
+</style>
+</head>
+<body>
+
+<h1>1D Kinematics Practice Quiz</h1>
+
+<div class="question-box" id="quizBox">
+
+    <h2 id="question"></h2>
+
+    <div id="choices"></div>
+
+    <button onclick="showHint()">Hint</button>
+
+    <div class="hint" id="hint"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button id="nextBtn" onclick="nextQuestion()">Next Question</button>
+
+</div>
+
+<div id="scoreBox">
+    <h2>Quiz Complete!</h2>
+    <h3 id="score"></h3>
+</div>
+
+<script>
+
+const quiz = [
+
+{
+question:"1. Which quantity describes how fast an object's position changes?",
+choices:["Acceleration","Velocity","Force","Mass"],
+answer:1,
+hint:"It has units of m/s."
+},
+
+{
+question:"2. What is the SI unit of acceleration?",
+choices:["m","m/s","m/s²","kg"],
+answer:2,
+hint:"Velocity change per second."
+},
+
+{
+question:"3. A car moves at constant velocity. What is its acceleration?",
+choices:["10 m/s²","1 m/s²","0 m/s²","Cannot determine"],
+answer:2,
+hint:"Velocity is not changing."
+},
+
+{
+question:"4. In free fall (ignoring air resistance), acceleration is approximately:",
+choices:["9.8 m/s² upward","0 m/s²","9.8 m/s² downward","20 m/s²"],
+answer:2,
+hint:"Gravity acts downward."
+},
+
+{
+question:"5. What does a horizontal line on a position-time graph mean?",
+choices:["Constant velocity","Constant position","Acceleration","Free fall"],
+answer:1,
+hint:"The object's position is not changing."
+},
+
+{
+question:"6. If velocity increases every second, the object has:",
+choices:["Acceleration","Zero velocity","Mass","Displacement only"],
+answer:0,
+hint:"Velocity is changing."
+},
+
+{
+question:"7. An object starts from rest. What is its initial velocity?",
+choices:["10 m/s","1 m/s","0 m/s","-1 m/s"],
+answer:2,
+hint:"Rest means not moving."
+},
+
+{
+question:"8. Which graph's slope gives velocity?",
+choices:["Velocity-Time","Position-Time","Acceleration-Time","Mass-Time"],
+answer:1,
+hint:"Position divided by time."
+},
+
+{
+question:"9. If an object moves 5 m east and then 3 m east, its displacement is:",
+choices:["2 m","8 m","15 m","0 m"],
+answer:1,
+hint:"Both motions are in the same direction."
+},
+
+{
+question:"10. What does a positive acceleration indicate?",
+choices:["Velocity changing in the positive direction","Object is always speeding up","Object is stopped","Displacement is zero"],
+answer:0,
+hint:"Think about direction."
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion(){
+
+    document.getElementById("feedback").innerHTML="";
+    document.getElementById("hint").innerHTML="";
+    document.getElementById("nextBtn").style.display="none";
+
+    let q = quiz[currentQuestion];
+
+    document.getElementById("question").innerHTML=q.question;
+
+    let choicesHTML="";
+
+    q.choices.forEach((choice,index)=>{
+        choicesHTML += `
+        <div>
+            <label>
+                <input type="radio" name="answer" value="${index}">
+                ${choice}
+            </label>
+        </div>`;
+    });
+
+    choicesHTML += `<br><button onclick="checkAnswer()">Submit Answer</button>`;
+
+    document.getElementById("choices").innerHTML=choicesHTML;
+}
+
+function showHint(){
+    document.getElementById("hint").innerHTML=
+    "Hint: " + quiz[currentQuestion].hint;
+}
+
+function checkAnswer(){
+
+    const selected =
+    document.querySelector('input[name="answer"]:checked');
+
+    if(!selected){
+        alert("Please select an answer.");
+        return;
+    }
+
+    let answer = Number(selected.value);
+
+    if(answer === quiz[currentQuestion].answer){
+
+        score++;
+
+        document.getElementById("feedback").innerHTML=
+        "✅ Correct!";
+
+        document.getElementById("nextBtn").style.display="inline-block";
+
+        document.querySelectorAll('input[name="answer"]').forEach(r=>{
+            r.disabled=true;
+        });
+
+    }else{
+
+        document.getElementById("feedback").innerHTML=
+        "❌ Incorrect. Try Again.";
+
+    }
+}
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(currentQuestion < quiz.length){
+
+        loadQuestion();
+
+    }else{
+
+        document.getElementById("quizBox").style.display="none";
+        document.getElementById("scoreBox").style.display="block";
+
+        document.getElementById("score").innerHTML=
+        `Your Score: ${score} / ${quiz.length}`;
+    }
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
