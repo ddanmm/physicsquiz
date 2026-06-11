@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Science Practice Quiz</title>
+<title>1D Kinematics Quiz</title>
 
 <style>
 *{
@@ -24,7 +24,7 @@ body{
 
 #quizBox{
     width:100%;
-    max-width:700px;
+    max-width:800px;
     background:#fff;
     border-radius:15px;
     padding:25px;
@@ -37,11 +37,17 @@ h1{
     color:#333;
 }
 
+#progress{
+    text-align:center;
+    margin-bottom:15px;
+    color:#666;
+    font-weight:bold;
+}
+
 #question{
-    font-size:1.4rem;
+    font-size:1.3rem;
     margin-bottom:20px;
     line-height:1.5;
-    color:#222;
 }
 
 .choice{
@@ -52,11 +58,10 @@ h1{
     border-radius:10px;
     cursor:pointer;
     transition:0.2s;
-    font-size:1rem;
 }
 
 .choice:hover{
-    background:#f8f9fa;
+    background:#f7f9fc;
     border-color:#2196F3;
 }
 
@@ -72,7 +77,7 @@ button{
     border-radius:10px;
     font-size:1rem;
     cursor:pointer;
-    transition:0.2s;
+    margin-top:10px;
 }
 
 #submitBtn{
@@ -80,30 +85,19 @@ button{
     color:white;
 }
 
-#submitBtn:hover{
-    background:#1976D2;
-}
-
 #nextBtn{
     background:#4CAF50;
     color:white;
-    margin-top:12px;
-}
-
-#nextBtn:hover{
-    background:#388E3C;
 }
 
 .correct{
     color:green;
     font-weight:bold;
-    margin-top:15px;
 }
 
 .wrong{
     color:red;
     font-weight:bold;
-    margin-top:15px;
 }
 
 .explanation{
@@ -128,9 +122,9 @@ button{
 
 .result p{
     font-size:1.2rem;
+    margin-bottom:10px;
 }
 
-/* Mobile Optimization */
 @media (max-width:600px){
 
     body{
@@ -144,21 +138,15 @@ button{
     }
 
     h1{
-        font-size:1.7rem;
+        font-size:1.6rem;
     }
 
     #question{
-        font-size:1.2rem;
+        font-size:1.1rem;
     }
 
     .choice{
-        font-size:1rem;
         padding:14px;
-    }
-
-    button{
-        font-size:1rem;
-        padding:15px;
     }
 }
 </style>
@@ -168,13 +156,15 @@ button{
 
 <div id="quizBox">
 
-    <h1>Science Practice Quiz</h1>
+    <h1>1D Kinematics Quiz</h1>
+
+    <div id="progress"></div>
 
     <h2 id="question"></h2>
 
     <div id="choices"></div>
 
-    <button id="submitBtn">Submit</button>
+    <button id="submitBtn">Submit Answer</button>
 
     <div id="feedback"></div>
 
@@ -187,38 +177,73 @@ button{
 const quiz = [
 
 {
-question:"1. What force pulls objects toward Earth?",
-choices:["Friction","Gravity","Magnetism","Tension"],
+question:"1. A car travels 120 m in 10 s. What is its speed?",
+choices:["10 m/s","12 m/s","15 m/s","20 m/s"],
 answer:1,
-explanation:"Gravity is the force that attracts objects toward Earth."
+explanation:"Speed = Distance ÷ Time = 120 ÷ 10 = 12 m/s."
 },
 
 {
-question:"2. Which planet is known as the Red Planet?",
-choices:["Venus","Jupiter","Mars","Mercury"],
-answer:2,
-explanation:"Mars appears reddish because of iron oxide on its surface."
+question:"2. A runner covers 200 m in 25 s. What is the runner's average speed?",
+choices:["5 m/s","8 m/s","10 m/s","12.5 m/s"],
+answer:1,
+explanation:"Speed = 200 ÷ 25 = 8 m/s."
 },
 
 {
-question:"3. What is the boiling point of water at sea level?",
-choices:["50°C","75°C","100°C","150°C"],
+question:"3. A bicycle moves at 6 m/s for 15 s. How far does it travel?",
+choices:["60 m","75 m","90 m","120 m"],
 answer:2,
-explanation:"Water boils at 100°C under normal atmospheric pressure."
+explanation:"Distance = Speed × Time = 6 × 15 = 90 m."
 },
 
 {
-question:"4. Which part of the plant makes food?",
-choices:["Root","Stem","Leaf","Flower"],
+question:"4. A bus travels 180 km in 3 hours. What is its average speed?",
+choices:["40 km/h","50 km/h","60 km/h","90 km/h"],
 answer:2,
-explanation:"Leaves perform photosynthesis to make food."
+explanation:"Speed = 180 ÷ 3 = 60 km/h."
 },
 
 {
-question:"5. What is the center of our solar system?",
-choices:["Earth","Moon","Sun","Mars"],
+question:"5. A train increases its velocity from 10 m/s to 30 m/s in 5 s. What is its acceleration?",
+choices:["2 m/s²","4 m/s²","5 m/s²","6 m/s²"],
+answer:1,
+explanation:"Acceleration = (30 − 10) ÷ 5 = 4 m/s²."
+},
+
+{
+question:"6. A motorcycle accelerates from 5 m/s to 20 m/s in 3 s. What is its acceleration?",
+choices:["3 m/s²","4 m/s²","5 m/s²","6 m/s²"],
 answer:2,
-explanation:"The Sun is at the center of the solar system."
+explanation:"Acceleration = (20 − 5) ÷ 3 = 5 m/s²."
+},
+
+{
+question:"7. A car moving at 25 m/s slows down to 10 m/s in 5 s. What is its acceleration?",
+choices:["-1 m/s²","-2 m/s²","-3 m/s²","-4 m/s²"],
+answer:2,
+explanation:"Acceleration = (10 − 25) ÷ 5 = -3 m/s²."
+},
+
+{
+question:"8. A runner starts from rest and accelerates at 2 m/s² for 4 s. What is the final velocity?",
+choices:["4 m/s","6 m/s","8 m/s","10 m/s"],
+answer:2,
+explanation:"Final velocity = 0 + (2 × 4) = 8 m/s."
+},
+
+{
+question:"9. An object moves with a constant speed of 15 m/s for 20 s. How far does it travel?",
+choices:["150 m","200 m","250 m","300 m"],
+answer:3,
+explanation:"Distance = 15 × 20 = 300 m."
+},
+
+{
+question:"10. A vehicle accelerates from 12 m/s to 24 m/s in 6 s. What is its acceleration?",
+choices:["1 m/s²","2 m/s²","3 m/s²","4 m/s²"],
+answer:1,
+explanation:"Acceleration = (24 − 12) ÷ 6 = 2 m/s²."
 }
 
 ];
@@ -230,6 +255,9 @@ function loadQuestion(){
 
     document.getElementById("feedback").innerHTML = "";
     document.getElementById("nextBtn").style.display = "none";
+
+    document.getElementById("progress").textContent =
+    `Question ${current + 1} of ${quiz.length}`;
 
     const q = quiz[current];
 
@@ -253,7 +281,8 @@ loadQuestion();
 
 document.getElementById("submitBtn").addEventListener("click",function(){
 
-    const selected = document.querySelector('input[name="answer"]:checked');
+    const selected =
+    document.querySelector('input[name="answer"]:checked');
 
     if(!selected){
         alert("Please select an answer.");
@@ -262,6 +291,10 @@ document.getElementById("submitBtn").addEventListener("click",function(){
 
     const answer = Number(selected.value);
     const q = quiz[current];
+
+    document.querySelectorAll('input[name="answer"]').forEach(r=>{
+        r.disabled = true;
+    });
 
     if(answer === q.answer){
 
@@ -273,19 +306,19 @@ document.getElementById("submitBtn").addEventListener("click",function(){
         <div class="explanation">${q.explanation}</div>
         `;
 
-        document.getElementById("nextBtn").style.display = "block";
-
-        document.querySelectorAll('input[name="answer"]').forEach(r=>{
-            r.disabled = true;
-        });
-
     }else{
 
         document.getElementById("feedback").innerHTML =
-        `<p class="wrong">✘ Incorrect. Try Again.</p>`;
-
+        `
+        <p class="wrong">✘ Incorrect</p>
+        <div class="explanation">
+        Correct Answer: <strong>${q.choices[q.answer]}</strong><br><br>
+        ${q.explanation}
+        </div>
+        `;
     }
 
+    document.getElementById("nextBtn").style.display = "block";
 });
 
 document.getElementById("nextBtn").addEventListener("click",function(){
@@ -298,16 +331,17 @@ document.getElementById("nextBtn").addEventListener("click",function(){
 
     }else{
 
+        let percent = Math.round((score / quiz.length) * 100);
+
         document.getElementById("quizBox").innerHTML = `
         <div class="result">
             <h2>🎉 Quiz Complete!</h2>
             <p>Your Score:</p>
             <p><strong>${score}/${quiz.length}</strong></p>
+            <p>${percent}%</p>
         </div>
         `;
-
     }
-
 });
 
 </script>
