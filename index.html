@@ -1,53 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Science Practice Quiz</title>
 
 <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
-    font-family: Arial, sans-serif;
-    max-width: 700px;
-    margin: 30px auto;
-    padding: 20px;
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+    padding:15px;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 #quizBox{
-    border:1px solid #ccc;
-    padding:20px;
+    width:100%;
+    max-width:700px;
+    background:#fff;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+#question{
+    font-size:1.4rem;
+    margin-bottom:20px;
+    line-height:1.5;
+    color:#222;
+}
+
+.choice{
+    display:block;
+    padding:15px;
+    margin-bottom:12px;
+    border:1px solid #ddd;
     border-radius:10px;
+    cursor:pointer;
+    transition:0.2s;
+    font-size:1rem;
+}
+
+.choice:hover{
+    background:#f8f9fa;
+    border-color:#2196F3;
+}
+
+.choice input{
+    margin-right:10px;
+    transform:scale(1.2);
 }
 
 button{
-    padding:10px 20px;
-    margin-top:15px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    font-size:1rem;
     cursor:pointer;
+    transition:0.2s;
+}
+
+#submitBtn{
+    background:#2196F3;
+    color:white;
+}
+
+#submitBtn:hover{
+    background:#1976D2;
+}
+
+#nextBtn{
+    background:#4CAF50;
+    color:white;
+    margin-top:12px;
+}
+
+#nextBtn:hover{
+    background:#388E3C;
 }
 
 .correct{
     color:green;
     font-weight:bold;
+    margin-top:15px;
 }
 
 .wrong{
     color:red;
     font-weight:bold;
+    margin-top:15px;
 }
 
 .explanation{
-    background:#f0f8ff;
-    padding:10px;
+    background:#eef7ff;
+    padding:12px;
     margin-top:10px;
     border-left:4px solid #2196F3;
+    border-radius:6px;
+}
+
+#feedback{
+    margin-top:15px;
+}
+
+.result{
+    text-align:center;
+}
+
+.result h2{
+    margin-bottom:15px;
+}
+
+.result p{
+    font-size:1.2rem;
+}
+
+/* Mobile Optimization */
+@media (max-width:600px){
+
+    body{
+        padding:10px;
+        align-items:flex-start;
+    }
+
+    #quizBox{
+        padding:18px;
+        margin-top:20px;
+    }
+
+    h1{
+        font-size:1.7rem;
+    }
+
+    #question{
+        font-size:1.2rem;
+    }
+
+    .choice{
+        font-size:1rem;
+        padding:14px;
+    }
+
+    button{
+        font-size:1rem;
+        padding:15px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<h1>Science Practice Quiz</h1>
-
 <div id="quizBox">
+
+    <h1>Science Practice Quiz</h1>
+
     <h2 id="question"></h2>
 
     <div id="choices"></div>
@@ -57,6 +179,7 @@ button{
     <div id="feedback"></div>
 
     <button id="nextBtn" style="display:none;">Next Question</button>
+
 </div>
 
 <script>
@@ -105,82 +228,85 @@ let score = 0;
 
 function loadQuestion(){
 
-document.getElementById("feedback").innerHTML="";
-document.getElementById("nextBtn").style.display="none";
+    document.getElementById("feedback").innerHTML = "";
+    document.getElementById("nextBtn").style.display = "none";
 
-const q = quiz[current];
+    const q = quiz[current];
 
-document.getElementById("question").textContent = q.question;
+    document.getElementById("question").textContent = q.question;
 
-let html = "";
+    let html = "";
 
-q.choices.forEach((choice,index)=>{
-html += `
-<label>
-<input type="radio" name="answer" value="${index}">
-${choice}
-</label><br><br>
-`;
-});
+    q.choices.forEach((choice,index)=>{
+        html += `
+        <label class="choice">
+            <input type="radio" name="answer" value="${index}">
+            ${choice}
+        </label>
+        `;
+    });
 
-document.getElementById("choices").innerHTML = html;
+    document.getElementById("choices").innerHTML = html;
 }
 
 loadQuestion();
 
 document.getElementById("submitBtn").addEventListener("click",function(){
 
-const selected = document.querySelector('input[name="answer"]:checked');
+    const selected = document.querySelector('input[name="answer"]:checked');
 
-if(!selected){
-alert("Please select an answer.");
-return;
-}
+    if(!selected){
+        alert("Please select an answer.");
+        return;
+    }
 
-const answer = Number(selected.value);
-const q = quiz[current];
+    const answer = Number(selected.value);
+    const q = quiz[current];
 
-if(answer === q.answer){
+    if(answer === q.answer){
 
-score++;
+        score++;
 
-document.getElementById("feedback").innerHTML =
-`<p class="correct">✔ Correct!</p>
-<div class="explanation">${q.explanation}</div>`;
+        document.getElementById("feedback").innerHTML =
+        `
+        <p class="correct">✔ Correct!</p>
+        <div class="explanation">${q.explanation}</div>
+        `;
 
-document.getElementById("nextBtn").style.display="inline-block";
+        document.getElementById("nextBtn").style.display = "block";
 
-document.querySelectorAll('input[name="answer"]').forEach(r=>{
-r.disabled = true;
-});
+        document.querySelectorAll('input[name="answer"]').forEach(r=>{
+            r.disabled = true;
+        });
 
-}
-else{
+    }else{
 
-document.getElementById("feedback").innerHTML =
-`<p class="wrong">✘ Incorrect. Try Again.</p>`;
+        document.getElementById("feedback").innerHTML =
+        `<p class="wrong">✘ Incorrect. Try Again.</p>`;
 
-}
+    }
 
 });
 
 document.getElementById("nextBtn").addEventListener("click",function(){
 
-current++;
+    current++;
 
-if(current < quiz.length){
+    if(current < quiz.length){
 
-loadQuestion();
+        loadQuestion();
 
-}
-else{
+    }else{
 
-document.getElementById("quizBox").innerHTML = `
-<h2>Quiz Complete!</h2>
-<p>Your Score: <strong>${score}/${quiz.length}</strong></p>
-`;
+        document.getElementById("quizBox").innerHTML = `
+        <div class="result">
+            <h2>🎉 Quiz Complete!</h2>
+            <p>Your Score:</p>
+            <p><strong>${score}/${quiz.length}</strong></p>
+        </div>
+        `;
 
-}
+    }
 
 });
 
